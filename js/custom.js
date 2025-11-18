@@ -28,4 +28,16 @@
 
 
     
+let lastScrollTop = 0;
+const submenu = document.querySelector('.submenu-container');
+
+window.addEventListener('scroll', function() {
+  let currentScroll = window.scrollY;
+  if (currentScroll > lastScrollTop) {
+    submenu.classList.add('hidden');
+  } else {
+    submenu.classList.remove('hidden');
+  }
+  lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+});
 

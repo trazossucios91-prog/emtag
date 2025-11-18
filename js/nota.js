@@ -1,92 +1,135 @@
-const palabrasClave = [
-  "rin", "juego de rines", "rines",
-  "llantas", "llanta", "juego de llantas"
-];
+// =============================
+// Nota de Remisión - JS Completo
+// =============================
 
-function contienePalabraClave(texto) {
-  const t = texto.toLowerCase();
-  return palabrasClave.some(p => t.includes(p));
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const tablaBody = document.getElementById("nota-body");
+  const btnAgregarFila = document.getElementById("btn-agregar-fila");
+  const totalFinalInput = document.getElementById("total-final");
 
-function agregarFila() {
-  const tabla = document.getElementById("tabla-productos").getElementsByTagName('tbody')[0];
-  const fila = tabla.insertRow();
+  // -----------------------------
+  // Función para recalcular totales
+  // -----------------------------
+  function recalcularTotales() {
+    let totalFinal = 0;
 
-  const celdas = [
-    '<input type="text" class="descripcion">',
-    '<input type="number" class="cantidad" min="1" value="1">',
-    '<input type="number" class="precio-unitario" min="0">',
-    '<input type="number" class="precio-juego" min="0">',
-    '<input type="number" class="total" readonly>',
-    '<button class="btn eliminar" onclick="eliminarFila(this)">🗑️</button>'
-  ];
+    tablaBody.querySelectorAll("tr").forEach((fila) => {
+      const cantidad = parseFloat(fila.querySelector(".cantidad")?.value) || 0;
+      const precioUnitario = parseFloat(fila.querySelector(".precio-unitario")?.value) || 0;
+      const total = cantidad * precioUnitario;
 
-  const clases = [
-    "descripcion",
-    "cantidad",
-    "precio-unitario",
-    "td-precio-juego ocultar", // td con clase para ocultar
-    "total",
-    "acciones"
-  ];
+      const totalInput = fila.querySelector(".total");
+      if (totalInput) {
+        totalInput.value = total.toFixed(2);
+      }
 
-  for (let i = 0; i < clases.length; i++) {
-    const celda = fila.insertCell();
-    celda.className = clases[i];
-    celda.innerHTML = celdas[i];
+      totalFinal += total;
+    });
+
+    totalFinalInput.value = totalFinal.toFixed(2);
   }
 
-  const inputDescripcion = fila.querySelector(".descripcion");
-  const inputCantidad = fila.querySelector(".cantidad");
-  const inputPrecioUnitario = fila.querySelector(".precio-unitario");
-  const inputPrecioJuego = fila.querySelector(".precio-juego");
-  const inputTotal = fila.querySelector(".total");
-  const tdJuego = fila.querySelector(".td-precio-juego");
+  // -----------------------------
+  // Función para crear nueva fila
+  // -----------------------------
+  function crearFila() {
+    const nuevaFila = document.createElement("tr");
+    nuevaFila.innerHTML = `
+      <td><input type="number" class="form-control cantidad text-center" min="1" value="1"></td>
+      <td colspan="2"><input type="text" class="form-control descripcion" placeholder="Descripción"></td>
+      <td class="td-precio-juego ocultar"><input type="number" class="form-control precio-juego" min="0"></td>
+      <td><input type="number" class="form-control precio-unitario" min="0" step="0.01"></td>
+      <td><input type="text" class="form-control total" readonly></td>
+      <td><button class="btn btn-sm btn-danger eliminar"><i class="fa-solid fa-trash"></i></button></td>
+    `;
+    tablaBody.appendChild(nuevaFila);
 
-  function actualizarCampos() {
-    const desc = inputDescripcion.value;
+    // Eventos en la nueva fila
+    nuevaFila.querySelectorAll("input").forEach((input) => {
+      input.addEventListener("input", recalcularTotales);
+    });
 
-    if (contienePalabraClave(desc)) {
-      tdJuego.classList.remove("ocultar");
-      inputPrecioJuego.disabled = false;
-      inputPrecioJuego.readOnly = false;
-    } else {
-      tdJuego.classList.add("ocultar");
-      inputPrecioJuego.value = "";
-      inputPrecioJuego.disabled = true;
-    }
-
-    const cantidad = parseFloat(inputCantidad.value) || 0;
-    const precioJuego = parseFloat(inputPrecioJuego.value) || 0;
-    const precioUnitario = parseFloat(inputPrecioUnitario.value) || 0;
-
-    if (contienePalabraClave(desc) && precioJuego > 0) {
-      const precioPorUnidad = precioJuego / 4;
-      inputPrecioUnitario.value = precioPorUnidad.toFixed(2);
-      inputTotal.value = (cantidad * precioPorUnidad).toFixed(2);
-    } else {
-      inputTotal.value = (cantidad * precioUnitario).toFixed(2);
-    }
-
-    actualizarTotalFinal();
+    nuevaFila.querySelector(".eliminar").addEventListener("click", () => {
+      nuevaFila.remove();
+      recalcularTotales();
+    });
   }
 
-  [inputDescripcion, inputCantidad, inputPrecioUnitario, inputPrecioJuego].forEach(input => {
-    input.addEventListener("input", actualizarCampos);
+  // -----------------------------
+  // Inicializar eventos en filas existentes
+  // -----------------------------
+  tablaBody.querySelectorAll("input").forEach((input) => {
+    input.addEventListener("input", recalcularTotales);
   });
-}
 
-function eliminarFila(btn) {
-  const fila = btn.closest("tr");
-  fila.remove();
-  actualizarTotalFinal();
-}
+  // Evento agregar fila
+  btnAgregarFila.addEventListener("click", crearFila);
 
-function actualizarTotalFinal() {
-  const totales = document.querySelectorAll(".total");
-  let suma = 0;
-  totales.forEach(input => {
-    suma += parseFloat(input.value) || 0;
+  // Inicializar totales al cargar
+  recalcularTotales();
+
+  // -----------------------------
+  // Función imprimir nota
+  // -----------------------------
+  window.imprimirNota = function() {
+    const nota = document.querySelector('.nota');
+    const nuevaVentana = window.open('', '_blank');
+    nuevaVentana.document.write(`
+      <html>
+        <head>
+          <title>Imprimir Nota</title>
+          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+          <style>
+            body { padding: 2rem; font-family: 'Montserrat', sans-serif; }
+            .nota { box-shadow: none; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: center; }
+          </style>
+        </head>
+        <body>
+          ${nota.innerHTML}
+        </body>
+      </html>
+    `);
+    nuevaVentana.document.close();
+    nuevaVentana.focus();
+    nuevaVentana.print();
+    nuevaVentana.close();
+  };
+
+  // -----------------------------
+  // Función convertir a JPG
+  // -----------------------------
+  window.convertirJPG = function() {
+    const nota = document.querySelector('.nota');
+    html2canvas(nota, { scale: 2 }).then(canvas => {
+      const enlace = document.createElement('a');
+      enlace.href = canvas.toDataURL('image/jpeg', 1.0);
+      enlace.download = 'nota-de-venta.jpg';
+      enlace.click();
+    });
+  };
+});
+function convertirJPG() {
+  const nota = document.querySelector('.nota'); // el contenedor de la nota
+
+  // Usamos html2canvas
+  html2canvas(nota, {
+    scale: 2,                // mejor resolución
+    useCORS: true,           // para imágenes externas si las hubiera
+    allowTaint: false,       
+    backgroundColor: '#fff'  // fondo blanco
+  }).then(canvas => {
+    // Convertimos el canvas a imagen
+    canvas.toBlob(function(blob) {
+      const enlace = document.createElement('a');
+      enlace.href = URL.createObjectURL(blob);
+      enlace.download = 'nota-de-venta.jpg';
+      enlace.click();
+      URL.revokeObjectURL(enlace.href);
+    }, 'image/jpeg', 1.0);
+  }).catch(error => {
+    console.error("Error al generar JPG:", error);
+    alert("No se pudo generar la imagen. Revisa la consola.");
   });
-  document.getElementById("total-final").textContent = `$${suma.toFixed(2)}`;
 }

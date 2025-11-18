@@ -1,0 +1,91 @@
+<nav class="navbar navbar-expand-lg fixed-top" role="navigation" aria-label="Menú principal">
+  <div class="container">
+
+    <!-- Logo con atributo title para SEO -->
+    <a class="navbar-brand" href="#inicio" title="EMTAG - Inicio">
+      <img src="images/logo.svg" alt="Logo EMTAG - Rines y Accesorios Premium" loading="lazy">
+    </a>
+
+    <!-- Botón móvil -->
+    <button 
+      class="navbar-toggler" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#navbarNav" 
+      aria-controls="navbarNav" 
+      aria-expanded="false" 
+      aria-label="Abrir menú de navegación">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menú de navegación -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav align-items-center">
+
+        <li class="nav-item">
+          <a class="nav-link" href="#inicio" title="Ir al inicio">Inicio</a>
+        </li>
+
+        <!-- Menú desplegable Rines -->
+        <li class="nav-item dropdown position-static">
+          <a class="nav-link dropdown-toggle" href="#rines" id="rinesDropdown" role="button"
+             aria-haspopup="true" aria-expanded="false">
+            Rines
+          </a>
+          <div class="dropdown-menu" aria-labelledby="rinesDropdown">
+            <a class="dropdown-item d-flex align-items-center" href="#mercedes">
+              <img src="images/logos-rin/mercedes-benz.svg" alt="Logo Mercedes-Benz" class="menu-logo me-2">
+              Mercedes-Benz
+            </a>
+            <a class="dropdown-item d-flex align-items-center" href="#bmw">
+              <img src="images/logos-rin/bmw.svg" alt="Logo BMW" class="menu-logo me-2">
+              BMW
+            </a>
+            <a class="dropdown-item d-flex align-items-center" href="#audi">
+              <img src="images/logos-rin/audi.svg" alt="Logo Audi" class="menu-logo me-2">
+              Audi
+            </a>
+            <a class="dropdown-item d-flex align-items-center" href="#porsche">
+              <img src="images/logos-rin/porsche.svg" alt="Logo Porsche" class="menu-logo me-2">
+              Porsche
+            </a>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#Accesorios" title="Ver accesorios para vehículos">Accesorios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#Servicios" title="Explorar servicios especializados">Servicios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#Contacto" title="Contactar a EMTAG">Contacto</a>
+        </li>
+
+        <!-- Teléfono y Redes Sociales -->
+        <li class="nav-item phone-social-container">
+          <div class="phone-container d-flex align-items-center">
+            <i class="fab fa-whatsapp me-2" aria-hidden="true"></i>
+            <a 
+              href="https://wa.me/525580578240" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="text-white" 
+              title="Enviar mensaje por WhatsApp a EMTAG">
+              <span class="phone-number">55 8057 8240</span>
+            </a>
+          </div>
+          <div class="social-icons d-flex align-items-center">
+            <a href="#" title="Facebook EMTAG" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" title="Instagram EMTAG" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" title="TikTok EMTAG" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="#" title="YouTube EMTAG" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div id="menuOverlay"></div>

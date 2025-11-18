@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nota de Venta · Mobiliaria Aguirre</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    /* Fondo negro carbón en gradiente */
+    body { font-family: "Futura", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: linear-gradient(180deg,#0f1013,#1b1c1f); margin:0; padding:2rem; }
+
+    .document { max-width:960px; margin:auto; background:#fff; color:#111; padding:2rem 2.5rem; border:1px solid #e7e8ee; border-radius:6px; box-shadow:0 24px 72px rgba(0,0,0,.6); }
+
+    /* Header */
+    .header { display:grid; grid-template-columns:200px 1fr; gap:16px; align-items:center; border-bottom:1.5px solid #e6e6ea; padding-bottom:14px; margin-bottom:14px; }
+    .logo a{ display:inline-block; cursor:pointer; position:relative; }
+    .header img { height:140px; transition: transform .18s ease, filter .18s ease, box-shadow .18s ease; }
+    .logo a:hover img{ transform: scale(1.06); filter: brightness(1.05); box-shadow: 0 8px 28px rgba(201,166,58,.25); }
+    .logo a:active img{ transform: scale(1.08); }
+
+    .title h1 { margin:0; font-size:2rem; letter-spacing:.4px; line-height:1.12; font-weight:400; }
+    .title .regular{ font-weight:400; }
+    .title .medium{ font-weight:500; }
+    .subtitle { font-size:.9rem; letter-spacing:2px; text-transform:uppercase; color:#444; }
+
+    /* Chips de contacto */
+    .chips-box { margin-top:10px; background:#f2f2f4; border-radius:10px; padding:6px 10px; display:flex; gap:10px; flex-wrap:wrap; }
+    .chip { font-size:.85rem; color:#333; display:flex; align-items:center; gap:7px; text-decoration:none; }
+    .chip:hover{ text-decoration:underline; }
+
+    /* Objetivo y Folio */
+    .objective-folio { display:grid; grid-template-columns:2.5fr 1fr; gap:20px; margin:1rem 0; }
+    .objective .heading { font-weight:700; text-transform:uppercase; font-size:.8rem; }
+    .objective p { margin:.35rem 0 0; color:#666; font-style:italic; font-size:.8rem; line-height:1.45; }
+    .folio-box { border:1px solid #000; border-radius:6px; padding:10px; background:#fff; }
+    .folio-box label { font-size:.8rem; color:#111; margin-bottom:4px; font-weight:600; display:block; text-transform:uppercase; }
+    .folio-box input { border:1px solid #cfd2da; outline:none; padding:.45rem .6rem; font-size:.9rem; width:100%; background:#fff; color:#111; border-radius:6px; font-weight:600; }
+    .folio-box input.filled { color:#b30000; }
+
+    /* Datos del evento */
+    .section-title { text-align:center; font-weight:700; margin:20px 0 12px; font-size:1rem; text-transform:uppercase; }
+    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:10px; }
+    .field label { font-size:.85rem; color:#555; margin-bottom:4px; }
+    .field input, .field select { width:100%; border:1px solid #cfd2da; border-radius:6px; padding:8px 10px; background:#fff; font-size:.92rem; color:#111 }
+    .field input:focus, .field select:focus { outline:none; border-color:#111; }
+
+    /* Tabla de productos */
+    .table-wrap { border:1px solid #ddd; border-radius:10px; overflow:hidden; margin-top:10px; }
+    table { width:100%; border-collapse:collapse; }
+    thead th { background:#f3f4f7; color:#111; padding:.65rem .6rem; border-bottom:1px solid #dfe1e6; font-weight:700; font-size:.82rem; }
+    tbody td { padding:.55rem .6rem; border-bottom:1px solid #f1f2f6; font-size:.9rem; }
+    tbody tr:last-child td { border-bottom:none; }
+
+    /* Observaciones y Totales */
+    .belt { display:grid; grid-template-columns:1.2fr 1fr; gap:16px; margin:16px 0; }
+    .obs, .totals { border:1px solid #e2e4eb; border-radius:10px; padding:12px; background:#fff; }
+    .obs h6, .totals h6 { font-weight:700; font-size:.85rem; margin:0 0 6px; color:#555; }
+    textarea { width:100%; border:1px solid #ccc; border-radius:6px; padding:.6rem; font-size:.9rem; resize:vertical; background:#fff; color:#111 }
+    .totals .line { display:flex; justify-content:space-between; align-items:center; gap:.6rem; padding:.35rem 0; border-bottom:1px dashed #e0e2ea; }
+    .totals .line:last-child { border-bottom:none; }
+    .money { font-variant-numeric:tabular-nums; }
+
+    /* Botones carbón → dorado tenue */
+    .btn-carbon { background:linear-gradient(145deg,#222,#111); color:#cfcfcf; border:none; }
+    .btn-carbon:hover { background:linear-gradient(145deg,#6c541e,#b08d57); color:#fff; }
+
+    /* Footer: solo logos blancos, más grandes, centrados, fondo carbón gradiente */
+    .footer { background: linear-gradient(145deg,#111,#1f1f23); color:#c7c7c7; margin:22px -2.5rem -2.5rem -2.5rem; padding:26px; border-radius:0 0 6px 6px; text-align:center; }
+    .footer .brand-logos img { height:88px; margin:0 16px; filter:grayscale(100%) brightness(1.9); transition: transform .18s ease; }
+    .footer .brand-logos img:hover{ transform: scale(1.06); }
+
+    @media (max-width:900px) {
+      .header { grid-template-columns:140px 1fr; }
+      .objective-folio { grid-template-columns:1fr; }
+      .field-row { grid-template-columns:1fr; }
+      .belt { grid-template-columns:1fr; }
+      .footer .brand-logos img { height:74px; margin:0 10px; }
+    }
+    @media print {
+      @page { size: A4; margin: 14mm; }
+      body { background:#fff; padding:0; }
+      .document { box-shadow:none; border:none; }
+      .footer { background:#fff; color:#444; margin:18px 0 0; padding:0; }
+      .no-print{ display:none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="document">
+    <!-- HEADER -->
+    <div class="header">
+      <div class="logo" title="Ir a Facebook (Mobiliaria Aguirre)">
+        <a href="https://www.facebook.com/Eventosexclusiivos" target="_blank">
+          <img src="images/mobag/MOBL-01.png" alt="Logo Mobiliaria Aguirre">
+        </a>
+      </div>
+      <div>
+        <div class="title"><h1><span class="regular">MOBILIARIA</span> <span class="medium">AGUIRRE</span></h1></div>
+        <div class="subtitle">Producción y Diseño de Eventos</div>
+        <div class="chips-box">º
+          <a class="chip" href="https://api.whatsapp.com/send/?phone=525580356839&text=Gracias%20por%20sus%20servicios&type=phone_number&app_absent=0" target="_blank"><i class="bi bi-whatsapp"></i> 55 8035 6839</a>
+          <a class="chip" href="https://www.facebook.com/Eventosexclusiivos" target="_blank"><i class="bi bi-facebook"></i> /Eventosexclusiivos</a>
+          <span class="chip"><i class="bi bi-person-badge"></i> RFC HEAA 9307 13-PY2</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- OBJETIVO + FOLIO -->
+    <div class="objective-folio">
+      <div class="objective">
+        <div class="heading">Objetivo del contrato</div>
+        <p>El presente contrato tiene por objetivo la prestación de servicios de producción, organización, diseño y coordinación de eventos por parte de <strong>Mobiliaria Aguirre</strong>, conforme a los requerimientos y especificaciones solicitadas por <strong>el Cliente</strong>.</p>
+      </div>
+      <div class="folio-box">
+        <label for="folio">Nota de venta</label>
+        <input id="folio" type="text" placeholder="000123">
+      </div>
+    </div>
+
+    <!-- DATOS DEL EVENTO -->
+    <h3 class="section-title">Datos del evento</h3>
+    <div class="field-row">
+      <div class="field"><label>Nombre del Cliente:</label><input id="cliente" type="text" placeholder="Nombre y apellidos"></div>
+      <div class="field"><label>Número de Contacto:</label><input id="contacto" type="text" placeholder="55 0000 0000"></div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Fecha del Evento:</label>
+        <div class="input-group">
+          <span class="input-group-text" id="btnFecha" role="button" tabindex="0" title="Elegir fecha"><i class="bi bi-calendar3"></i></span>
+          <input id="fecha" type="date" class="form-control" aria-describedby="btnFecha">
+        </div>
+      </div>
+      <div class="field">
+        <label>Tipo de Celebración:</label>
+        <select id="tipo">
+          <option value="" selected>Selecciona…</option>
+          <option>Boda</option>
+          <option>XV años</option>
+          <option>Bautizo</option>
+          <option>Primera Comunión</option>
+          <option>Graduación</option>
+          <option>Baby Shower</option>
+          <option>Cumpleaños</option>
+          <option>Aniversario</option>
+          <option>Evento Corporativo</option>
+          <option>Conferencia</option>
+          <option>Inauguración</option>
+          <option>Posada</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>Dirección del Evento:</label><input id="direccion" type="text" placeholder="Calle, número, colonia, ciudad"></div>
+
+    <!-- TABLA DE PRODUCTOS -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>CANT.</th>
+            <th>DESCRIPCIÓN</th>
+            <th>PRECIO U.</th>
+            <th>IMPORTE</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="d-flex gap-2 mt-2 no-print">
+      <button class="btn btn-carbon" id="add">+ Agregar producto</button>
+      <button class="btn btn-carbon" id="exportCSV">Exportar CSV</button>
+      <button class="btn btn-carbon" id="print">Imprimir / PDF</button>
+    </div>
+
+    <!-- OBSERVACIONES & TOTALES -->
+    <div class="belt">
+      <div class="obs">
+        <h6>Observaciones</h6>
+        <textarea id="observ" rows="3" placeholder="Especificaciones, condiciones, notas…"></textarea>
+        <small class="text-muted d-block mt-2">En caso de modificar o cancelar la fecha del evento, <strong>se pierde el anticipo</strong>.</small>
+      </div>
+      <div class="totals">
+        <h6>Totales</h6>
+        <div class="line"><span>Subtotal</span><strong class="money" id="subtotal">$ 0.00</strong></div>
+        <div class="line align-items-center">
+          <div class="form-check form-switch m-0">
+            <input class="form-check-input" type="checkbox" id="ivaSwitch" checked>
+            <label class="form-check-label ms-2" for="ivaSwitch">Aplicar IVA (16%)</label>
+          </div>
+          <strong class="money" id="iva">$ 0.00</strong>
+        </div>
+        <div class="line">
+          <span>Descuento</span>
+          <div class="d-flex align-items-center gap-2">
+            <input id="descuento" class="form-control text-end" style="max-width:7rem" placeholder="0.00">
+            <div class="input-group input-group-sm" style="width:7rem">
+              <span class="input-group-text">%</span>
+              <input id="descuentoPct" class="form-control text-end" placeholder="0">
+            </div>
+          </div>
+        </div>
+        <div class="line"><label for="pago" class="mb-0 text-muted">Importe (pago)</label><input id="pago" class="form-control text-end" style="max-width:9rem" placeholder="0.00"></div>
+        <div class="line"><span>Total</span><strong class="money" id="total">$ 0.00</strong></div>
+        <div class="line"><span>Resta</span><strong class="money" id="resta">$ 0.00</strong></div>
+        <div class="mt-2 small text-muted">Importe con letra: <span id="pagoLetra">cero pesos 00/100 M.N.</span></div>
+      </div>
+    </div>
+
+    <!-- FOOTER (solo logos blancos) -->
+    <footer class="footer">
+      <div class="brand-logos">
+        <a href="https://www.facebook.com/Eventosexclusiivos" target="_blank"><img src="images/mobag/LOGOSEE-01.png" alt="Logos blancos / acreditaciones"></a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const fmt = new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN'});
+    const rowsEl = document.getElementById('rows');
+
+    // Utilidades
+    const clampNonNeg = n => { n = parseFloat(String(n).replace(',', '.')); return isNaN(n) || n < 0 ? 0 : n; };
+    const toMoney = v => fmt.format(clampNonNeg(v));
+
+    // --- Abrir selector de fecha al pulsar el ícono ---
+    (function(){
+      const fecha = document.getElementById('fecha');
+      const btn = document.getElementById('btnFecha');
+      if(fecha && btn){
+        const openPicker = ()=> fecha.showPicker ? fecha.showPicker() : fecha.focus();
+        btn.addEventListener('click', openPicker);
+        btn.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openPicker(); } });
+      }
+    })();
+
+    // --- Pegado masivo flexible ---
+    function parseLineFlexible(line){
+      const raw = line.trim();
+      if(!raw) return null;
+      // 1) opcional cantidad + desc + separador + precio (tabs, comas, ;, guiones -, –, —, @, |, o 2+ espacios)
+      const re1 = /^(?:\s*(\d+[\.,]?\d*)\s*[x×]?\s+)?(.+?)[\s]*(?:[\t,;\-\|—–@]+|\s{2,})\s*\$?\s*(\d+[\.,]?\d*)\s*$/i;
+      const m1 = raw.match(re1);
+      if(m1){
+        const q = clampNonNeg(m1[1]||1);
+        const d = m1[2].trim();
+        const p = clampNonNeg(m1[3]||0);
+        return {q,d,p};
+      }
+      // 2) qty,desc,price por separador (tab, coma, ;, |)
+      const parts = raw.split(/\t|,|;|\|/).map(s=>s.trim()).filter(Boolean);
+      if(parts.length>=3){
+        const q = clampNonNeg(parts[0]);
+        const p = clampNonNeg(parts[parts.length-1]);
+        const d = parts.slice(1, parts.length-1).join(' ');
+        return {q:q||1, d, p};
+      }
+      if(parts.length===2){
+        const a = clampNonNeg(parts[0]);
+        const b = clampNonNeg(parts[1]);
+        if(a && b) return {q:a, d:'', p:b};
+        if(b) return {q:1, d:parts[0], p:b};
+        return {q:a||1, d:parts[1], p:0};
+      }
+      return {q:1, d:raw, p:0};
+    }
+
+    function parseBulk(text){
+      const lines = text.replace(/\r/g,'').split('\n');
+      const items = [];
+      for(const line of lines){
+        const it = parseLineFlexible(line);
+        if(it) items.push(it);
+      }
+      return items.filter(it=>it.d && it.d.trim()!=='');
+    }
+
+    // --- Filas ---
+    function rowTemplate(q=1,d='',p=0){
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td><input type="number" min="0" step="1" value="${q}" class="form-control form-control-sm qty" aria-label="Cantidad"></td>
+        <td><input type="text" class="form-control form-control-sm desc" value="${d}" placeholder="Descripción" aria-label="Descripción"></td>
+        <td><input type="number" min="0" step="0.01" value="${p}" class="form-control form-control-sm price text-end" aria-label="Precio unitario"></td>
+        <td class="money amount">$ 0.00</td>
+        <td class="text-center"><button class="btn btn-sm btn-carbon del" aria-label="Eliminar fila">✕</button></td>`;
+      return tr;
+    }
+
+    function wireRow(tr){
+      const qty   = tr.querySelector('.qty');
+      const price = tr.querySelector('.price');
+      const desc  = tr.querySelector('.desc');
+      qty.addEventListener('input',  ()=>{ qty.value   = clampNonNeg(qty.value);   updateAll(); });
+      price.addEventListener('input',()=>{ price.value = clampNonNeg(price.value); updateAll(); });
+      tr.querySelector('.del').addEventListener('click',()=>{ tr.remove(); updateAll(); });
+      // pegado múltiple en descripción
+      desc.addEventListener('paste', (e)=>{
+        const text = (e.clipboardData || window.clipboardData).getData('text');
+        if(text && /\n|\t|;|\||—|–|-/.test(text)){
+          e.preventDefault();
+          const items = parseBulk(text);
+          if(items.length){
+            const first = items.shift();
+            qty.value   = first.q;  price.value = first.p;  desc.value = first.d;
+            for(const it of items){ addRow(it.q, it.d, it.p); }
+            updateAll();
+          }
+        }
+      });
+    }
+
+    function addRow(q=1,d='',p=0){
+      const tr = rowTemplate(q,d,p);
+      rowsEl.appendChild(tr);
+      wireRow(tr);
+      updateRow(tr);
+    }
+
+    function updateRow(tr){
+      const q = clampNonNeg(tr.querySelector('.qty').value);
+      const p = clampNonNeg(tr.querySelector('.price').value);
+      tr.querySelector('.amount').textContent = toMoney(q*p);
+    }
+
+    // --- Cálculos ---
+    function updateAll(){
+      let subtotal=0;
+      rowsEl.querySelectorAll('tr').forEach(tr=>{ updateRow(tr); subtotal += clampNonNeg(tr.querySelector('.qty').value) * clampNonNeg(tr.querySelector('.price').value); });
+      document.getElementById('subtotal').textContent = toMoney(subtotal);
+
+      const ivaSwitch = document.getElementById('ivaSwitch').checked;
+      const iva = ivaSwitch ? subtotal * 0.16 : 0;
+      document.getElementById('iva').textContent = toMoney(iva);
+
+      const descMonto = clampNonNeg(document.getElementById('descuento').value);
+      const descPct   = clampNonNeg(document.getElementById('descuentoPct').value);
+      const descPctMonto = subtotal * (descPct/100);
+      const descuentoTotal = Math.min(subtotal + iva, descMonto + descPctMonto);
+
+      const total = subtotal + iva - descuentoTotal;
+      document.getElementById('total').textContent = toMoney(total);
+
+      const pago  = clampNonNeg(document.getElementById('pago').value);
+      const resta = Math.max(total - pago, 0);
+      document.getElementById('resta').textContent = toMoney(resta);
+      document.getElementById('pagoLetra').textContent = numeroALetrasMX(pago);
+
+      // Folio en rojo si tiene valor
+      const folioEl = document.getElementById('folio');
+      folioEl.classList.toggle('filled', folioEl.value.trim()!=='');
+    }
+
+    // --- Número a letras (MXN) ---
+    function unidades(n){return ['cero','uno','dos','tres','cuatro','cinco','seis','siete','ocho','nueve'][n]||''}
+    function decenas(n){
+      const d=Math.floor(n/10), u=n%10, esp={10:'diez',11:'once',12:'doce',13:'trece',14:'catorce',15:'quince',20:'veinte'};
+      if(esp[n]!=null) return esp[n];
+      const tens=['','','veinti','treinta','cuarenta','cincuenta','sesenta','setenta','ochenta','noventa'];
+      if(n<20) return 'dieci'+unidades(n-10);
+      if(d===2) return 'veinti'+(u?unidades(u):'');
+      return tens[d]+(u?' y '+unidades(u):'');
+    }
+    function centenas(n){ if(n===100) return 'cien'; const c=Math.floor(n/100), r=n%100; const cen=['','ciento','doscientos','trescientos','cuatrocientos','quinientos','seiscientos','setecientos','ochocientos','novecientos']; return (cen[c]||'')+(r?' '+(r<10?unidades(r):decenas(r)):''); }
+    function seccion(n,div,sing,pl){ const cant=Math.floor(n/div), resto=n%div; let t=''; if(cant>0) t=(cant>1?numeroEntero(cant)+' '+pl:sing); return {t, resto}; }
+    function miles(n){ const s=seccion(n,1000,'mil','mil'); const t=centenas(s.resto); return (s.t?(s.t+(t?' '+t:'')):t)||'cero'; }
+    function millones(n){ const s=seccion(n,1e6,'un millón','millones'); const m=miles(s.resto); return (s.t?(s.t+(m&&s.resto?' ':'')+m):m); }
+    function numeroEntero(n){ if(n<100) return n<10?unidades(n):decenas(n); if(n<1000) return centenas(n); if(n<1e6) return miles(n); return millones(n); }
+    function numeroALetrasMX(num){ num=Number(num)||0; const ent=Math.floor(num); const cen=Math.round((num-ent)*100); return `${numeroEntero(ent)} pesos ${String(cen).padStart(2,'0')}/100 M.N.`; }
+
+    // --- Exportar CSV ---
+    function csvEscape(s){
+      const str = String(s??'');
+      const needsQuotes = /[",\n]/.test(str);
+      const esc = str.replace(/"/g,'""');
+      return needsQuotes? '"'+esc+'"' : esc;
+    }
+    function exportCSV(){
+      const rows = Array.from(document.querySelectorAll('#rows tr')).map(tr=>({
+        cantidad: tr.querySelector('.qty').value,
+        descripcion: tr.querySelector('.desc').value,
+        precio_unitario: tr.querySelector('.price').value,
+        importe: tr.querySelector('.amount').textContent.replace(/[^0-9.,-]/g,'')
+      }));
+      const subtotal = document.getElementById('subtotal').textContent.replace(/[^0-9.,-]/g,'');
+      const iva      = document.getElementById('iva').textContent.replace(/[^0-9.,-]/g,'');
+      const descM    = document.getElementById('descuento').value || '0';
+      const descP    = document.getElementById('descuentoPct').value || '0';
+      const total    = document.getElementById('total').textContent.replace(/[^0-9.,-]/g,'');
+      const pago     = document.getElementById('pago').value || '0';
+      const resta    = document.getElementById('resta').textContent.replace(/[^0-9.,-]/g,'');
+      const folio    = (document.getElementById('folio').value || 'sin_folio').replace(/\s+/g,'_');
+
+      const header = ['CANTIDAD','DESCRIPCION','PRECIO_UNITARIO','IMPORTE'];
+      const body = rows.map(r=>[r.cantidad,r.descripcion,r.precio_unitario,r.importe].map(csvEscape).join(','));
+      const resumen = [
+        [],
+        ['SUBTOTAL', subtotal],
+        ['IVA_16', iva],
+        ['DESCUENTO_MONTO', descM],
+        ['DESCUENTO_PCT', descP],
+        ['TOTAL', total],
+        ['PAGO', pago],
+        ['RESTA', resta],
+      ].map(arr=>arr.map(csvEscape).join(','));
+
+      const csv = [header.join(','), ...body, ...resumen].join('\r\n');
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `nota_mobiliaria_aguirre_${folio}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 50);
+    }
+
+    // Bindings
+    document.getElementById('add').addEventListener('click',()=>addRow());
+    document.getElementById('exportCSV').addEventListener('click', exportCSV);
+    document.getElementById('print').addEventListener('click',()=>window.print());
+    ['pago','descuento','descuentoPct','ivaSwitch','cliente','contacto','fecha','tipo','direccion','observ','folio']
+      .forEach(id=> document.getElementById(id)?.addEventListener('input', updateAll));
+
+    // Inicial
+    addRow();
+    updateAll();
+  </script>
+</body>
+</html>
