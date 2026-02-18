@@ -1,0 +1,267 @@
+/* ===== ESTILO GLOBAL ===== */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(
+        135deg,
+        #0B21BF,
+        #106EFD
+    );
+    color: #1c1c1c;
+    -webkit-font-smoothing: antialiased;
+}
+
+main.container {
+    background: white;
+    max-width: 960px;
+    padding: 50px;
+    margin: 40px auto;
+    border-radius: 18px;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.12);
+}
+
+/* ===== BARRA SUPERIOR ===== */
+
+.print-actions {
+    background: white;
+    border-bottom: 1px solid #eaeaea;
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.print-actions .btn {
+    border: none;
+    background: #111;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: .3px;
+    transition: all .25s ease;
+}
+
+.print-actions .btn:hover {
+    background: #000;
+    transform: translateY(-1px);
+}
+
+/* ===== BRANDING ===== */
+
+.brand-mark img {
+    width: 90px;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.brand-sub {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: 600;
+    color: #888;
+}
+
+.brand-title {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+/* ===== CONTACTO ===== */
+
+.contact div {
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.contact i {
+    margin-right: 6px;
+    color: #2f6bff;   /* Azul Atomoz */
+}
+
+/* ===== QUOTE BOX ===== */
+
+.quote-box {
+    border: 1px solid #e8e8e8;
+    border-radius: 14px;
+    overflow: hidden;
+    font-size: 13px;
+    background: white;
+}
+
+.quote-box .head {
+    background: #111;
+    color: white;
+    font-weight: 600;
+    letter-spacing: .5px;
+}
+
+.quote-box .cell {
+    padding: 12px;
+    font-weight: 600;
+}
+
+/* ===== FIELDLINES ===== */
+
+.fieldline {
+    border-bottom: 1px solid #efefef;
+    padding-bottom: 10px;
+}
+
+.fieldline .value {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* ===== SECCIONES ===== */
+
+.section-title {
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: .4px;
+}
+
+.section-title i {
+    margin-right: 6px;
+    color: #2f6bff;  /* Azul corporativo */
+}
+
+/* ===== LISTAS ===== */
+
+ul {
+    padding-left: 18px;
+    margin-bottom: 10px;
+}
+
+li {
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+/* ===== SEPARADORES ENTRE MARCAS (MEJORA PRO) ===== */
+
+.brand-block {
+    padding-bottom: 1.2rem;
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid rgba(47, 107, 255, 0.18);
+}
+
+.brand-title i {
+    color: #2f6bff;
+}
+
+/* ===== CARD DE TOTALES ===== */
+
+.totals-card {
+    border: 1px solid #ececec;
+    border-radius: 14px;
+    background: linear-gradient(
+        145deg,
+        #ffffff,
+        #f8f9fb
+    );
+}
+
+.totals-card .row {
+    border-bottom: 1px solid #ededed;
+}
+
+.totals-card .row:last-child {
+    border-bottom: none;
+}
+
+.totals-card .label {
+    font-size: 13px;
+    color: #777;
+    font-weight: 600;
+}
+
+.totals-card .value {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+/* ===== FOOTER ===== */
+
+img.img-fluid {
+    border-radius: 14px;
+}
+
+/* ===== PRINT MODE ===== */
+
+@media print {
+
+    body {
+        background: white;
+    }
+
+    main.container {
+        box-shadow: none;
+        margin: 0;
+        max-width: 100%;
+        border-radius: 0;
+        padding: 0;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}
+/* ===== LINKS DE CONTACTO ===== */
+
+.contact a {
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    transition: all .25s ease;
+}
+
+/* Línea animada tipo premium */
+
+.contact a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0%;
+    height: 1.5px;
+    background: #2f6bff;
+    transition: width .25s ease;
+}
+
+/* Hover */
+
+.contact a:hover {
+    color: #2f6bff;
+}
+
+.contact a:hover::after {
+    width: 100%;
+}
+
+
+.contact div {
+    transition: transform .25s ease, opacity .25s ease;
+}
+
+.contact div:hover {
+    transform: translateX(3px);
+}
+
+/* Iconos */
+
+.contact i {
+    transition: transform .25s ease, color .25s ease;
+}
+
+.contact div:hover i {
+    transform: scale(1.08);
+    color: #2f6bff;
+}
